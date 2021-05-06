@@ -6,3 +6,6 @@ Yang mana
 * Model      : Untuk mengolah data di database yang kita butuhkan
 * View       : Untuk mengatur tampilan website kita 
 * Controller : Untuk mengatur url website kita dan sebagai Control atas Model dan View
+
+
+Untuk cara penggunaan Framework ada di Folder App/Doc/Doc.php
