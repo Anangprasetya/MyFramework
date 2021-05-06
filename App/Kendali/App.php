@@ -4,19 +4,35 @@ class App{
 	protected $controller = Controller;
 	protected $method = Method;
 	protected $params = [];
+	protected $folder;
 
 	public function __construct()
 	{
 		$url = $this->parseURL();
+
 		if (isset($url[0])) {
 			if (file_exists('App/Controllers/' . ucfirst($url[0]) . '.php')) {
 				$this->controller = ucfirst($url[0]);
 				unset($url[0]);
+				require_once 'App/Controllers/' . $this->controller . '.php';
 			}
+			elseif (isset($url[1]) && file_exists('App/Controllers/' .ucfirst($url[0]). '/' . ucfirst($url[1]) . '.php')) {
+				$this->folder = ucfirst($url[0]);
+				$this->controller = ucfirst($url[1]);
+				unset($url[0]);
+				unset($url[1]);
+				require_once 'App/Controllers/' . $this->folder .  '/' . $this->controller . '.php';
+			}
+			else{
+				require_once 'App/Controllers/' . $this->controller . '.php';
+			}
+		}
+		else{
+			require_once 'App/Controllers/' . $this->controller . '.php';
 		}
 
 
-		require_once 'App/Controllers/' . $this->controller . '.php';
+
 
 		$this->controller = new $this->controller;
 
@@ -24,6 +40,12 @@ class App{
 			if (method_exists($this->controller, $url[1])) {
 				$this->method = $url[1];
 				unset($url[1]);
+			}
+		}
+		elseif (isset($url[2])) {
+			if (method_exists($this->controller, $url[2])) {
+				$this->method = $url[2];
+				unset($url[2]);
 			}
 		}
 
